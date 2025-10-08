@@ -120,4 +120,5 @@ logoutButton.addEventListener('click', () => {
 // Ao carregar a página, garante que a tela de login está visível
 document.addEventListener('DOMContentLoaded', () => {
     showScreen(false);
+
 });
