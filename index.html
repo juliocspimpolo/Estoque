@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle de Estoque - Login</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="login-screen">
+        <div class="login-container">
+            <h1>Sistema de Controle</h1>
+            <h2>Acesso Restrito</h2>
+            
+            <form id="login-form">
+                <div class="input-group">
+                    <label for="login-usuario">Usuário</label>
+                    <input type="text" id="login-usuario" required>
+                </div>
+                
+                <div class="input-group">
+                    <label for="login-senha">Senha</label>
+                    <input type="password" id="login-senha" required>
+                </div>
+                
+                <p id="mensagem-erro" class="erro"></p>
+                
+                <button type="submit" id="btn-login">Entrar</button>
+            </form>
+        </div>
+    </div>
+    
+    <div id="main-content" style="display: none;">
+        <header>
+            <nav>
+                <span id="welcome-message">Bem-vindo(a), [Nome do Usuário]</span>
+                <button id="logout-button">Sair</button>
+            </nav>
+        </header>
+        
+        <main>
+            <h2>Página Principal do Estoque</h2>
+            <p>Conteúdo em desenvolvimento...</p>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
