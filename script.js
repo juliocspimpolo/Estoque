@@ -24,80 +24,74 @@ let usuarioLogado = null;
 // FUNÇÕES DE EXIBIÇÃO
 // =========================================================================
 
-// Função para mostrar ou esconder as telas
 function showScreen(isLoggedIn, userName, permissionLevel) {
     if (isLoggedIn) {
         loginScreen.style.display = 'none';
         mainContent.style.display = 'block';
         welcomeMessage.textContent = `Bem-vindo(a), ${userName} (${permissionLevel})`;
-        
-        // FUTURE: Aqui você faria a lógica de permissões visuais
-        // if (permissionLevel === 'VIEW') { stockForm.style.display = 'none'; }
-        
     } else {
-        loginScreen.style.display = 'flex'; // Usamos flex para centralizar
+        loginScreen.style.display = 'flex';
         mainContent.style.display = 'none';
     }
 }
 
+// Função utilitária para fazer requisição via IFrame (contorna o CORS)
+function sendRequest(data, callback) {
+    const urlComParametros = `${API_URL}?data=${encodeURIComponent(JSON.stringify(data))}`;
+    
+    const iframe = document.createElement('iframe');
+    iframe.name = 'apps-script-iframe-' + data.action;
+    iframe.style.display = 'none';
+
+    iframe.onload = function() {
+        try {
+            const resultado = JSON.parse(iframe.contentWindow.document.body.innerText);
+            callback(resultado);
+        } catch (error) {
+            callback({ resultado: 'Erro', mensagem: 'Erro de comunicação. Verifique a autorização do Apps Script.' });
+            console.error('Erro ao processar resposta do iframe:', error);
+        } finally {
+            document.body.removeChild(iframe);
+        }
+    };
+
+    document.body.appendChild(iframe);
+    iframe.src = urlComParametros;
+}
+
 
 // =========================================================================
-// LÓGICA DE LOGIN (Via IFrame/GET para evitar CORS)
+// LÓGICA DE LOGIN 
 // =========================================================================
 
 loginForm.addEventListener('submit', (e) => {
     e.preventDefault(); 
     
-    // 1. Coleta e limpa
     const login = document.getElementById('login-usuario').value;
     const senha = document.getElementById('login-senha').value;
     mensagemErro.textContent = ''; 
     btnLogin.disabled = true;
     btnLogin.textContent = 'Verificando...';
 
-    // 2. Prepara os dados
     const dadosParaApi = {
         action: 'login',
         login: login,
         senha: senha
     };
 
-    // 3. Monta URL com dados serializados
-    const urlComParametros = `${API_URL}?data=${encodeURIComponent(JSON.stringify(dadosParaApi))}`;
-    
-    // 4. Cria e anexa o IFrame
-    const iframe = document.createElement('iframe');
-    iframe.name = 'apps-script-iframe';
-    iframe.style.display = 'none';
-
-    // 5. Listener de resposta
-    iframe.onload = function() {
-        try {
-            // A API retorna o JSON como texto puro no corpo do IFrame
-            const resultado = JSON.parse(iframe.contentWindow.document.body.innerText);
-
-            if (resultado.resultado === 'Sucesso') {
-                usuarioLogado = resultado.usuario;
-                
-                showScreen(true, usuarioLogado.nome, usuarioLogado.permissao);
-                mensagemErro.textContent = 'Login realizado!';
-                mensagemErro.style.color = 'green';
-            } else {
-                mensagemErro.textContent = resultado.mensagem || 'Erro desconhecido no login.';
-                mensagemErro.style.color = 'red';
-            }
-        } catch (error) {
-             mensagemErro.textContent = 'Erro de comunicação. Verifique a autorização do Apps Script.';
-             console.error('Erro ao processar resposta do iframe:', error);
-        } finally {
-            document.body.removeChild(iframe);
-            btnLogin.disabled = false;
-            btnLogin.textContent = 'Entrar';
+    sendRequest(dadosParaApi, (resultado) => {
+        if (resultado.resultado === 'Sucesso') {
+            usuarioLogado = resultado.usuario;
+            showScreen(true, usuarioLogado.nome, usuarioLogado.permissao);
+            mensagemErro.textContent = 'Login realizado!';
+            mensagemErro.style.color = 'green';
+        } else {
+            mensagemErro.textContent = resultado.mensagem || 'Erro desconhecido no login.';
+            mensagemErro.style.color = 'red';
         }
-    };
-
-    document.body.appendChild(iframe);
-    iframe.src = urlComParametros; 
+        btnLogin.disabled = false;
+        btnLogin.textContent = 'Entrar';
+    });
 });
 
 
@@ -108,67 +102,45 @@ loginForm.addEventListener('submit', (e) => {
 stockForm.addEventListener('submit', (e) => {
     e.preventDefault();
     
-    // Validação de usuário
     if (!usuarioLogado) {
         mensagemEstoque.textContent = 'Erro: Faça login novamente.';
         return;
     }
     
-    // 1. Coleta os dados do formulário de estoque
+    // Coleta dos dados
     const tipo = document.getElementById('movimento-tipo').value;
     const sku = document.getElementById('movimento-sku').value;
     const descricao = document.getElementById('movimento-descricao').value;
     const quantidade = document.getElementById('movimento-quantidade').value;
     const observacoes = document.getElementById('movimento-observacoes').value;
     
-    // 2. Prepara os dados para o Apps Script (com a action: 'addStock')
+    // Prepara os dados
     const dadosParaApi = {
         action: 'addStock', // CHAMA A FUNÇÃO handleAddStock
         tipo: tipo,
         sku: sku,
         descricao: descricao,
         quantidade: quantidade,
-        responsavel: usuarioLogado.login, // Pega o login do usuário logado
+        responsavel: usuarioLogado.login,
         observacoes: observacoes
     };
     
-    // Reseta o estado do botão
     mensagemEstoque.textContent = '';
     btnMovimentar.disabled = true;
     btnMovimentar.textContent = 'Registrando...';
 
-    // 3. Monta a URL (IFrame/GET)
-    const urlComParametros = `${API_URL}?data=${encodeURIComponent(JSON.stringify(dadosParaApi))}`;
-    
-    const iframe = document.createElement('iframe');
-    iframe.name = 'apps-script-stock-iframe';
-    iframe.style.display = 'none';
-
-    // 4. Listener de resposta
-    iframe.onload = function() {
-        try {
-            const resultado = JSON.parse(iframe.contentWindow.document.body.innerText);
-
-            if (resultado.resultado === 'Sucesso') {
-                mensagemEstoque.textContent = 'Movimentação registrada com sucesso! (Verifique a planilha)';
-                mensagemEstoque.style.color = 'green';
-                stockForm.reset(); // Limpa o formulário
-            } else {
-                mensagemEstoque.textContent = resultado.mensagem || 'Erro ao registrar. Verifique o log de Execuções do Apps Script.';
-                mensagemEstoque.style.color = 'red';
-            }
-        } catch (error) {
-             mensagemEstoque.textContent = 'Erro de comunicação no retorno. Tente novamente.';
-             console.error('Erro ao processar resposta do iframe (Estoque):', error);
-        } finally {
-            document.body.removeChild(iframe);
-            btnMovimentar.disabled = false;
-            btnMovimentar.textContent = 'Registrar Movimentação';
+    sendRequest(dadosParaApi, (resultado) => {
+        if (resultado.resultado === 'Sucesso') {
+            mensagemEstoque.textContent = 'Movimentação registrada com sucesso! (Verifique a planilha)';
+            mensagemEstoque.style.color = 'green';
+            stockForm.reset(); 
+        } else {
+            mensagemEstoque.textContent = resultado.mensagem || 'Erro ao registrar. Verifique o Apps Script.';
+            mensagemEstoque.style.color = 'red';
         }
-    };
-
-    document.body.appendChild(iframe);
-    iframe.src = urlComParametros;
+        btnMovimentar.disabled = false;
+        btnMovimentar.textContent = 'Registrar Movimentação';
+    });
 });
 
 
@@ -184,8 +156,6 @@ logoutButton.addEventListener('click', () => {
     mensagemErro.style.color = 'red';
 });
 
-// Ao carregar a página, garante que a tela de login está visível
 document.addEventListener('DOMContentLoaded', () => {
-    // Isso é importante para que o IFrame do login não bloqueie o carregamento
     setTimeout(() => showScreen(false), 50); 
 });
