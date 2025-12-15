@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "sistema-de-estoque-472402",
+  "private_key_id": "3cee33150ef10538f1e08888e8c915a930b590d5",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCqRqepsgzABpgM\ng+1HlKbzGQ+Lch9/UZXVo5a4169z6QDIdGBwaPfxGYiOmXMY6JGVu5NXSUnms5VT\nAwrfWSE4XCsqDxeWs9uC5z/IF5rAZPTKgJH9MjRvdixPAAWBVEXmrXz0tVxYUJF1\nhPFqqcioau0CXsjQD8B0jUc4JWas1v0YXyC2BBvJftEaJmJ6BMZ02r0UlJm0BWN8\njeSM5svXgzCeSXfQp8sEJsj4WQwJEd8PLSu9/5Lvb7BXWFpOY4Y1eZK7Py2XEw33\noakqdt6GamtRU7s+ddqn/70YurX3/9j4g1P86mi+MB43kjogyL9AgOspgjWOJBIM\n6HQHuIzDAgMBAAECggEAOo1hSjE3wTCDSIp1JZAweJe9iK4NtrJPW8+NHLLOWoVd\nB5E9OGpgGEA3fRG3SnFu3pZJ7FH/X52RU6JQMs1rZv4KucPG0MO4UCNFA4FabZ5J\nrvjXOsHw1gNE6UWQnxBjmRc/SMa0oonR+x9kBNGtdnyOU6pUU3eXLn0GaIAz9mrG\nkxU1/Iprl9BoEftOPmjCv4jG3sppoZnuLs/4j6Xs/OrIlSsl43opvMadNtN1in1i\nwrXvajWm8lkZtJmCx01wg/egMgySIEqNssgDOFHLKjYKcvtBL/sYvYgGdOuQvTpl\nUjdUUHa0KhCzS0LoESfx4JQ/FWyzpM2mnKRewKCowQKBgQDsyCylaNWHEuplTRVC\nyqw5aq4I4MMdd2P+qZIH2teXdXozj8zq1mB/fehJ1rBUklQZtiy2SkVqJES2OaNR\nPVxILLWkn2FEGW2YCaBZU94NPVdV4StyMzLXoapUwqeyJMsLKQQbkUksuDJ9ySaW\n3y39GxgSY4QsMmVEBz7vT7e7RQKBgQC4GKDihIV1J0/9/qW0bkoWn7fDeYGZi2FU\nAOXJQJJJhmNweH9VSSizf+D2NY2tN9I/2TiYtes4PiBjpnCz/x+CLQYKiMYlUspJ\n4n1hpXdtF/zEF3zYI2LmwUIv77lYmqUwio87PW4b72Xkc/wA0DCrsZAcANZm8cSs\nR+CkYMSkZwKBgQDCMx9i/st6gEockY8pe76rTNK2V1nP9hbeTEeIB7Yg8+opFfz0\ncqUsi6CTxvBSPL2bZO3hCKNL/bkZV8aaH+BrFbhY75s/1jcrpmGMQhvx8eiKeCZB\nALrnXiGsaQZPNpwNaDOFRLCma+CFiBANV7iJScqBcnt6IE8r72Fvt4synQKBgF3h\niWIarKhS1PM1QjGiMLwa1S6lLxcrQgYBsy0Pdcpy8xDvEhhfB5eKNiG4q7hTCDAx\nSTBvTTXQUNogjcbs6peK+FK07z8nWiuVidUa+a0zl140kCD04sHEeklR2dY6ftUj\nQ+m06Qrr6a04DKIpiTh1g4UUVEIJNv+YZBHPm1gvAoGAEJ5sGBz91CfeOGr6M4cw\noZgnFC3PnxmZOxy1O57jYljS6wHtMqyrZAnem8NqmUc5FH9qVv1C7RA4lTI4DJ8m\n+b82kDO0dW790U5mncTqPesV/L2YDUDSrYU47KcqInFXNIrPae1Rl6yH6f0u8jnG\nHtI7e9G2k7CooiFp9E6/u3w=\n-----END PRIVATE KEY-----\n",
+  "client_email": "planilha-estoque-service@sistema-de-estoque-472402.iam.gserviceaccount.com",
+  "client_id": "101168255319806223492",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/planilha-estoque-service%40sistema-de-estoque-472402.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
